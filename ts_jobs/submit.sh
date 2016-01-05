@@ -69,7 +69,7 @@ for i in ${output_file_location}/${output_file_mask}; do
 
     # start job
     cd ${jobdir}
-    sbatch ${slurm_script_filename}
+    sbatch ${slurm_script}
     cd ..
 
 done
