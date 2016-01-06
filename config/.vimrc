@@ -100,3 +100,6 @@ map ` <Nop>
 "map to capital keys
 cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
 cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+
+"markdown options
+let g:vim_markdown_frontmatter=1
