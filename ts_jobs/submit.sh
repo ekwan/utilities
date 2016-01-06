@@ -6,13 +6,15 @@
 ##################
 
 # where the output files are
-output_file_location=/share/PI/nburns/jobs4/output
+#output_file_location=/share/PI/nburns/jobs4/output
+output_file_location=/share/PI/nburns/jobs4/temp
 
 # where the checkpoints with the frequencies are
 checkpoint_file_directory=/share/PI/nburns/jobs4
 
 # all output files in output_file_location matching this will be submitted
-output_file_mask=indocat_mannosyl_diax_BnOH_???.out
+#output_file_mask=indocat_mannosyl_diax_BnOH_???.out
+output_file_mask=indocat_mannosyl_dieq_anomer_BnOH_???.out
 
 # all checkpoints will be called this
 checkpoint_standard_filename=checkpoint.chk
@@ -35,22 +37,23 @@ for i in ${output_file_location}/${output_file_mask}; do
     rawdir=`echo $i | awk 'BEGIN {FS="/"} {gsub(".out", "", $0); print $NF }'`
     jobdir=${rawdir}_ts
     if [ -d $jobdir ]; then
-        echo Directory already present.
+        echo Directory already present, skipping this file.
         continue
     fi
     
     # make sure a checkpoint is available
     source_checkpoint_filename=${checkpoint_file_directory}/${rawdir}/${checkpoint_standard_filename}
     if [ ! -f ${source_checkpoint_filename} ]; then
-        echo Checkpoint file ${source_checkpoint_filename} not found!
+        echo Checkpoint file ${source_checkpoint_filename} not found!  Skipping.
         continue
     fi
 
     # make sure a frequency job was completed
     freqs=`grep -c Frequencies $i`
     if [ $freqs -lt 10 ]; then
-        echo Frequencies not found.
-        continue
+        echo Frequencies not found.  Will calculate frequencies first.
+    else
+        echo Frequencies found.  Will use existing frequencies.
     fi
  
     # create job directory and copy checkpoint
@@ -59,7 +62,12 @@ for i in ${output_file_location}/${output_file_mask}; do
     cp ${source_checkpoint_filename} ${destination_checkpoint_filename}
 
     # copy in job file
-    cp freq_to_ts.gjf ${jobdir}/${jobdir}.gjf
+    # if frequencies are present, we won't calculate them at the start again
+    if [ $freqs -ge 10 ]; then
+        cp freq_to_ts.gjf ${jobdir}/${jobdir}.gjf
+    else
+        cp opt_to_ts.gjf ${jobdir}/${jobdir}.gjf
+    fi
     cp analyze.sh ${jobdir}
 
     # create slurm script

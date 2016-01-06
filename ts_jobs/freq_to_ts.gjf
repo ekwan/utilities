@@ -1,7 +1,7 @@
 %chk=checkpoint.chk
 %mem=32GB
 %nprocshared=16
-#p m062x/6-31g(d) scrf=(pcm,solvent=toluene) guess=read opt=(ts,noeigentest,calcfc,maxstep=5) freq=noraman geom=allcheck
+#p m062x/6-31g(d) scrf=(pcm,solvent=toluene) guess=read opt=(ts,noeigentest,readfc,maxstep=5) freq=noraman geom=allcheck
 
 
 
