@@ -90,6 +90,8 @@ END {
         {
             filename=filenames[i]
             gsub(".out","",filename)
+            if ( length(filename) > 40 )
+                filename = substr(filename,length(filename)-39,40)
             i in energy ? relEnergy=(energy[i]-minEnergy)*627.509469 : relEnergy = 0.0
             thisIterations=iterations[i]
             maxForce = maxForces[i]*1E5
