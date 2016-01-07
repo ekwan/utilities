@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -f *.class
+javac -Xlint:unchecked $1.java
+
+if [ $? -eq 0 ]; then
+ java $1
+fi
+
+rm -f *.class
