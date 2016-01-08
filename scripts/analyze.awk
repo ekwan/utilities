@@ -94,10 +94,10 @@ END {
                 filename = substr(filename,length(filename)-39,40)
             i in energy ? relEnergy=(energy[i]-minEnergy)*627.509469 : relEnergy = 0.0
             thisIterations=iterations[i]
-            maxForce = maxForces[i]*1E5
-            RMSforce = RMSforces[i]*1E5
-            maxDisplacement = maxDisplacements[i]*1E5
-            RMSdisplacement = RMSdisplacements[i]*1E5
+            maxForce = i in maxForces ? sprintf("%9.1f", maxForces[i]*1E5) : ""
+            RMSforce = i in RMSforces ? sprintf("%9.1f", RMSforces[i]*1E5) : ""
+            maxDisplacement = i in maxDisplacements ? sprintf("%9.1f", maxDisplacements[i]*1E5): ""
+            RMSdisplacement = i in RMSdisplacements ? sprintf("%9.1f", RMSdisplacements[i]*1E5): ""
             formingBond = distance(i,119,138)
             breakingBond = distance(i,67,138)
             isFinished=finished[i] == 0 ? "NO" : finished[i]
@@ -107,7 +107,7 @@ END {
             lastLinkString = lastLink[i]
             #RMSdelta = calculateRMS(i,i-1)
             #print RMSdelta
-            printf "%40s %10.4f  %3d  %5s  %9.1f    %9.1f   %9.1f   %9.1f   %8.3f   %8.3f      %3s   %12s\n", filename, relEnergy, thisIterations, lastLinkString, RMSforce, maxForce, RMSdisplacement, maxDisplacement, formingBond, breakingBond, isFinished, imaginariesString
+            printf "%40s %10.4f  %3d  %5s  %9s    %9s   %9s   %9s   %8.3f   %8.3f      %3s   %12s\n", filename, relEnergy, thisIterations, lastLinkString, RMSforce, maxForce, RMSdisplacement, maxDisplacement, formingBond, breakingBond, isFinished, imaginariesString
         }
 }
 
