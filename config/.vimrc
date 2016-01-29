@@ -68,6 +68,11 @@ set ai "Auto indent
 set si "Smart indet
 set wrap "Wrap lines
 
+set smartindent
+"set cindent
+"set cinkeys-=0#
+"set indentkeys-=0#
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
