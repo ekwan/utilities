@@ -1,0 +1,15 @@
+#!/bin/bash
+# for linux
+
+rm -f kill.txt
+rm -f *.class
+filename=${1%%.*}
+
+javac -Xlint:all -Xmaxerrs 5 -cp .:lib/* $filename.java
+
+if [ $? -eq 0 ]; then
+    echo Compiled.
+    java -cp .:lib/* $*
+fi
+
+rm -f *.class
