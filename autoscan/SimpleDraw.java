@@ -9,7 +9,7 @@ public class SimpleDraw
     public static void main(String[] args)
         {
             // read input file
-            GJFfile input_gjf = new GJFfile("template_glucose_anomer.gjf");
+            GJFfile input_gjf = new GJFfile("template_galactose_anomer.gjf");
             Molecule molecule = input_gjf.molecule;
 
             // define the atom numbers to be frozen
@@ -35,7 +35,7 @@ public class SimpleDraw
                     Atom atom1 = newMolecule.contents.get(fromAtomNumber-1);
                     Atom atom2 = newMolecule.contents.get(toAtomNumber-1);
 
-                    String filename = String.format("output/glucose_anomer_freeze_%.0f.gjf", distance * 100);
+                    String filename = String.format("output/galactose_anomer_freeze_%.0f.gjf", distance * 100);
                     GaussianInputFile output_gjf = new GaussianInputFile(newMolecule, "title", keywords, tail);
                     output_gjf.write(filename);
                     
