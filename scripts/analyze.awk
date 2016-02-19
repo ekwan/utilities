@@ -23,7 +23,7 @@ FNR == 1 {
     iterations[fileCount]++
 }
 
-/NAtoms=/ {
+$1 == "NAtoms=" {
     if ( numberOfAtoms == 0 )
         {
             numberOfAtoms=$2
