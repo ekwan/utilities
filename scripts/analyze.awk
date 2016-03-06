@@ -98,8 +98,8 @@ END {
             RMSforce = i in RMSforces ? sprintf("%9.1f", RMSforces[i]*1E5) : ""
             maxDisplacement = i in maxDisplacements ? sprintf("%9.1f", maxDisplacements[i]*1E5): ""
             RMSdisplacement = i in RMSdisplacements ? sprintf("%9.1f", RMSdisplacements[i]*1E5): ""
-            formingBond = distance(i,119,138)
-            breakingBond = distance(i,67,138)
+            formingBond = distance(i,1,4)
+            breakingBond = distance(i,1,7)
             isFinished=finished[i] == 0 ? "NO" : finished[i]
             imaginariesString = didFrequencies[i] ? "--" : ""
             if (i in imaginaries)
