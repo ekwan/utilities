@@ -45,6 +45,13 @@ NR != FNR {
     finished++
 }
 
+/Full mass-weighted force constant matrix/ {
+    if (numberOfImaginaries>0)
+        {
+            imaginaries[numberOfImaginaries] = imaginaries[numberOfImaginaries] ";"
+        }
+}
+
 /^ Frequencies --/ {
     didFrequencies=1
     for (i=3; i <= NF; i++)
@@ -52,7 +59,8 @@ NR != FNR {
             if ($i < 0)
                 {
                     numberOfImaginaries++
-                    imaginaries[numberOfImaginaries]=$i
+                    imaginaries[numberOfImaginaries]=sprintf("%.0f",$i)
+                    #print numberOfImaginaries, imaginaries[numberOfImaginaries]
                 }
         }
 }
@@ -88,15 +96,22 @@ END {
             RMSforce = i in RMSforces ? sprintf("%9.1f", RMSforces[i]*1E5) : ""
             maxDisplacement = i in maxDisplacements ? sprintf("%9.1f", maxDisplacements[i]*1E5): ""
             RMSdisplacement = i in RMSdisplacements ? sprintf("%9.1f", RMSdisplacements[i]*1E5): ""
-            bond1 = distance(i, 6,9)
-            bond2 = distance(i, 9,12)
+            bond1 = distance(i, 119,125)
+            bond2 = distance(i, 125,67)
             printf "  %3d       %9.4f  %9s    %9s   %9s   %9s    %5.2f      %5.2f     %6.3f   %6.3f\n", i, relEnergy, RMSforce, maxForce, RMSdisplacement, maxDisplacement, scf_time[i], gradient_time[i], bond1, bond2
         }
     printf "Normal terminations: %d\n", finished
     if ( didFrequencies == 1 )
         {
             for (i=1; i <= numberOfImaginaries; i++)
-                imaginaryString += imaginaries[i] " "
+                {
+                    if ( substr(imaginaries[i], length(imaginaries[i]), 1) == ";" )
+                        imaginaryString = imaginaryString imaginaries[i] "   "
+                    else if ( i < numberOfImaginaries )
+                        imaginaryString = imaginaryString imaginaries[i] ", "
+                    else
+                        imaginaryString = imaginaryString imaginaries[i]
+                }
             if (numberOfImaginaries>0)
                 printf "Imaginaries: %s\n", imaginaryString
             else
