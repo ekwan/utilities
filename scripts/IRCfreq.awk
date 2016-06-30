@@ -12,7 +12,7 @@ FNR != FNR {
 
 $1 == "Charge" && $4 == "Multiplicity" {
     charge = $3
-    multiplicity = $5
+    multiplicity = $6
 }
 
 /Cartesian Coordinates/,/CHANGE IN THE REACTION COORDINATE/ {
@@ -32,7 +32,7 @@ $1 == "Charge" && $4 == "Multiplicity" {
 END {
     for (i=1; i <= points; i++)
         {
-            filename = sprintf("gjf/IRC_reverse_%03d.gjf", i)
+            filename = sprintf("gjf/IRC_forward_%03d.gjf", i)
             print "%nprocshared=4" > filename
             print "%mem=3GB" >> filename
             print "#p b3lyp/6-31g* empiricaldispersion=gd3bj scrf=(pcm,solvent=water) freq=noraman pop=none" >> filename
