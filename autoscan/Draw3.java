@@ -9,13 +9,13 @@ public class Draw3
     public static void main(String[] args)
         {
             // read input file
-            GJFfile input_gjf = new GJFfile("template_galactose_b3lyp.gjf");
+            GJFfile input_gjf = new GJFfile("endo-b3lyp_d3bj-631gd-pcm.gjf");
             Molecule molecule = input_gjf.molecule;
 
             // define the atom numbers to be frozen
             // the fragment attached to "toAtomNumber" will be moved
-            int fromAtomNumber1 = 1;
-            int toAtomNumber1   = 4;
+            int fromAtomNumber1 = 2;
+            int toAtomNumber1   = 6;
             int fromAtomNumber2 = 9;
             int toAtomNumber2   = 10;
 
