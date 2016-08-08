@@ -52,6 +52,8 @@ public class DrawTorsion
                             output_gjf.write(filename);
                             
                             double actualTorsion = indexTorsion.getDihedralAngle(newMolecule);
+                            Clatom = newMolecule.contents.get(10-1);
+                            C6atom = newMolecule.contents.get(14-1);
                             double actualDistance = newMolecule.getDistance(Clatom,C6atom);
                             System.out.printf("%.0f,%.0f\t\t%.2f,%.2f\t%s\n", torsion, actualTorsion, distance, actualDistance, filename);
                         }
