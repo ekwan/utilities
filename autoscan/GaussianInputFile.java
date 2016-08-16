@@ -41,7 +41,7 @@ public class GaussianInputFile extends InputFileFormat
             returnString = "#\n";
         else
             returnString = keywords + "\n";
-        returnString += "\n" + name + "\n\n0 1\n";
+        returnString += "\n" + name + "\n\n-1 1\n";
         returnString = returnString + molecule.toOmnisolString() + "\n";
         
         Atom fromAtom = null;
