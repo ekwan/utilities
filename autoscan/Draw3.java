@@ -9,7 +9,9 @@ public class Draw3
     public static void main(String[] args)
         {
             // read input file
+	    
             GJFfile input_gjf = new GJFfile("formamide_new_4H2O_addition_grid.gjf");
+
             Molecule molecule = input_gjf.molecule;
 
             // define the atom numbers to be frozen
