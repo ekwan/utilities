@@ -1,3 +1,6 @@
+# usage: awk -f snip.awk *.out
+# output gets dumped to *.snip
+
 FNR == 1 {
     fileCount++
     filenames[fileCount]=FILENAME
