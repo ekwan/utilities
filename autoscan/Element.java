@@ -12,6 +12,7 @@ public enum Element
     CHLORINE ("Cl", 3.40, 0.300), 
     PHOSPHORUS ("P", 3.72, 0.20),
     BROMINE ("Br", 3.15, 0.15),
+    IODINE ("I", 3.15, 0.15),    // no known params
     TITANIUM ("Ti", 3.75, 0.105),
     DUMMY ("Q", 0, 0);
 
@@ -59,6 +60,8 @@ public enum Element
             return DUMMY;
         else if ( symbol.equals("Br") )
             return BROMINE;
+        else if ( symbol.equals("I") )
+            return IODINE;
         else if ( symbol.equals("Ti") )
             return TITANIUM;
         else

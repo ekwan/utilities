@@ -578,7 +578,7 @@ System.out.println();
     {
         // figure out which atoms to move
         Set<Atom> toBeMoved = getHalfGraph(atom2, atom3);
-
+        
         // create atom map
         LinkedHashMap<Atom,Atom> atomMap = new LinkedHashMap<Atom,Atom>();
 

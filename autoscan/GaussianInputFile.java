@@ -10,22 +10,22 @@ public class GaussianInputFile extends InputFileFormat
 {
     public GaussianInputFile(Molecule molecule)
     {
-        super(getGaussianString(molecule,molecule.name,"",""));
+        super(getGaussianString(molecule,molecule.name,"","",true,0,1));
     }
 
     public GaussianInputFile(Molecule molecule, String name)
     {
-        super(getGaussianString(molecule,name,"",""));
+        super(getGaussianString(molecule,name,"","",true,0,1));
     }
 
     public GaussianInputFile(Molecule molecule, String name, String keywords)
     {
-        super(getGaussianString(molecule,name,keywords,""));
+        super(getGaussianString(molecule,name,keywords,"",true,0,1));
     }
 
     public GaussianInputFile(Molecule molecule, String name, String keywords, String tail)
     {
-        super(getGaussianString(molecule,name,keywords,tail));
+        super(getGaussianString(molecule,name,keywords,tail,true,0,1));
     }
 
     public GaussianInputFile(Molecule molecule, Set<Atom> includeAtoms)
@@ -33,7 +33,12 @@ public class GaussianInputFile extends InputFileFormat
         super(getGaussianString(molecule,includeAtoms));
     }
 
-    private static String getGaussianString(Molecule molecule, String name, String keywords, String tail)
+    public GaussianInputFile(Molecule molecule, String name, String keywords, String tail, boolean writeConnectivity, int charge, int multiplicity)
+    {
+        super(getGaussianString(molecule, name, keywords, tail, writeConnectivity, charge, multiplicity));
+    }
+
+    private static String getGaussianString(Molecule molecule, String name, String keywords, String tail, boolean writeConnectivity, int charge, int multiplicity)
     {
         //String returnString = "%chk=checkpoint.chk\n%mem=32GB\n%nprocshared=16\n#p geom=connect m062x/6-31g(d) scrf=(pcm,solvent=toluene) pop=none freq=noraman opt=modredundant " + keywords + "\n";
         String returnString = "";
@@ -41,53 +46,58 @@ public class GaussianInputFile extends InputFileFormat
             returnString = "#\n";
         else
             returnString = keywords + "\n";
-        returnString += "\n" + name + "\n\n-1 1\n";
+        returnString += String.format("\n%s\n\n%d %d\n", name, charge, multiplicity);
         returnString = returnString + molecule.toOmnisolString() + "\n";
         
-        Atom fromAtom = null;
-        Atom toAtom = null;
-        Integer fromAtomNumber = 0;
-        Integer toAtomNumber = 0;
-        Double bondOrder = 0.0;
-        DefaultWeightedEdge thisEdge = null;
-
-        // read connectivity data into parallel arrays
-        ArrayList<Integer> fromAtoms = new ArrayList<Integer>();
-        ArrayList<Integer> toAtoms = new ArrayList<Integer>();
-        ArrayList<Double> bondOrders = new ArrayList<Double>();
-        ArrayList<Boolean> visited = new ArrayList<Boolean>();
-        for (DefaultWeightedEdge e : molecule.connectivity.edgeSet())
+        if ( writeConnectivity )
             {
-                fromAtom = molecule.connectivity.getEdgeSource(e);
-                fromAtomNumber = molecule.contents.indexOf(fromAtom) + 1;
-                toAtom = molecule.connectivity.getEdgeTarget(e);
-                toAtomNumber = molecule.contents.indexOf(toAtom) + 1;
-                bondOrder = molecule.connectivity.getEdgeWeight(e);
+                Atom fromAtom = null;
+                Atom toAtom = null;
+                Integer fromAtomNumber = 0;
+                Integer toAtomNumber = 0;
+                Double bondOrder = 0.0;
+                DefaultWeightedEdge thisEdge = null;
 
-                fromAtoms.add(fromAtomNumber);
-                toAtoms.add(toAtomNumber);
-                bondOrders.add(bondOrder);
-                visited.add(false);
-            }
-        for (int i=0; i < molecule.contents.size(); i++)
-            {
-                returnString = returnString + (i+1) + " ";
-                for (int j=0; j < fromAtoms.size(); j++)
+                // read connectivity data into parallel arrays
+                ArrayList<Integer> fromAtoms = new ArrayList<Integer>();
+                ArrayList<Integer> toAtoms = new ArrayList<Integer>();
+                ArrayList<Double> bondOrders = new ArrayList<Double>();
+                ArrayList<Boolean> visited = new ArrayList<Boolean>();
+                for (DefaultWeightedEdge e : molecule.connectivity.edgeSet())
                     {
-                        if (fromAtoms.get(j) == i+1 && visited.get(j) == false)
+                        fromAtom = molecule.connectivity.getEdgeSource(e);
+                        fromAtomNumber = molecule.contents.indexOf(fromAtom) + 1;
+                        toAtom = molecule.connectivity.getEdgeTarget(e);
+                        toAtomNumber = molecule.contents.indexOf(toAtom) + 1;
+                        bondOrder = molecule.connectivity.getEdgeWeight(e);
+
+                        fromAtoms.add(fromAtomNumber);
+                        toAtoms.add(toAtomNumber);
+                        bondOrders.add(bondOrder);
+                        visited.add(false);
+                    }
+                for (int i=0; i < molecule.contents.size(); i++)
+                    {
+                        returnString = returnString + (i+1) + " ";
+                        for (int j=0; j < fromAtoms.size(); j++)
                             {
-                                returnString = returnString + toAtoms.get(j) + " " + String.format("%.1f ", bondOrders.get(j));
-                                visited.set(j, true);
+                                if (fromAtoms.get(j) == i+1 && visited.get(j) == false)
+                                    {
+                                        returnString = returnString + toAtoms.get(j) + " " + String.format("%.1f ", bondOrders.get(j));
+                                        visited.set(j, true);
+                                    }
+                                if (toAtoms.get(j) == i+1 && visited.get(j) == false)
+                                    {
+                                        returnString = returnString + fromAtoms.get(j) + " " + String.format("%.1f ", bondOrders.get(j));
+                                        visited.set(j, true);
+                                    }
                             }
-                        if (toAtoms.get(j) == i+1 && visited.get(j) == false)
-                            {
-                                returnString = returnString + fromAtoms.get(j) + " " + String.format("%.1f ", bondOrders.get(j));
-                                visited.set(j, true);
-                            }
+                        returnString = returnString + "\n";
                     }
                 returnString = returnString + "\n";
             }
-        returnString = returnString + "\n" + tail + "\n\n";
+
+        returnString = returnString + tail + "\n\n";
         return returnString;
     }
 
@@ -120,6 +130,6 @@ public class GaussianInputFile extends InputFileFormat
 
         Molecule tempMolecule2 = new Molecule(molecule.name, newContents, connectivity, 0.0);
 
-        return getGaussianString(tempMolecule2, molecule.name, "", "");
+        return getGaussianString(tempMolecule2, molecule.name, "", "", false,0,1);
     }
 }
