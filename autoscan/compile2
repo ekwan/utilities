@@ -1,0 +1,11 @@
+# for use on cygwin
+
+rm -f *.class
+filename=${1%%.*}
+javac -Xlint:all -Xmaxerrs 50 -cp '.;lib/*' $filename.java
+
+if [ $? -eq 0 ]; then
+    java -cp '.;lib/*' $filename
+fi
+
+rm -f *.class
