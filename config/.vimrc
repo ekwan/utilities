@@ -69,9 +69,9 @@ set si "Smart indet
 set wrap "Wrap lines
 
 set smartindent
-"set cindent
-"set cinkeys-=0#
-"set indentkeys-=0#
+"""set cindent
+"""set cinkeys-=0#
+"""set indentkeys-=0#
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
@@ -94,6 +94,7 @@ set smartindent
 
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set statusline=%F%m%r%h%w\ %l/%L
+set statusline+=\ %c
 set laststatus=2
 
 "set comment autocomplete to off
