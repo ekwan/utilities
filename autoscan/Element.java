@@ -14,6 +14,7 @@ public enum Element
     BROMINE ("Br", 3.15, 0.15),
     IODINE ("I", 3.15, 0.15),    // no known params
     TITANIUM ("Ti", 3.75, 0.105),
+    SODIUM ("Na", 4.07, 0.0005),
     DUMMY ("Q", 0, 0);
 
     /** the atomic symbol for this element */
@@ -64,6 +65,8 @@ public enum Element
             return IODINE;
         else if ( symbol.equals("Ti") )
             return TITANIUM;
+        else if ( symbol.equals("Na") )
+            return SODIUM;
         else
             throw new IllegalArgumentException("Unrecognized atom symbol (" + symbol + ")!");
     }

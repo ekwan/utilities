@@ -276,7 +276,7 @@ public class Molecule implements Immutable, Serializable
         Atom atom1 = connectivity.getEdgeSource(e);
         Atom atom2 = connectivity.getEdgeTarget(e);
         double bondOrder = connectivity.getEdgeWeight(e);
-        return String.format("%s-%s (.1f)", getAtomString(atom1), getAtomString(atom2), bondOrder);
+        return String.format("%s-%s (%.1f)", getAtomString(atom1), getAtomString(atom2), bondOrder);
     }
 
     /**
