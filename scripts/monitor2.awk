@@ -67,10 +67,13 @@ END {
     }
 
     # print out energies and gradients for each iteration of each file
-    print "filename                                                                                            iteration   rel_energy   cart_force   bond1  bond2"
+    print "filename                                                                                              iteration   rel_energy   cart_force   bond1  bond2"
     
     for (i=1; i <= number_of_files; i++) {
         current_filename = filenames[i]
+        if ( length(current_filename) > 100 )
+            current_filename = substr(current_filename, length(current_filename)-99, 100)
+
         gsub(".out","",current_filename)
         for (j=1; j <= number_of_iterations[i]; j++) {
             # calculate relative energy in kcal/mol
@@ -78,6 +81,8 @@ END {
 
             # get cartesian force
             current_force = cartesian_forces[i,j]*1E5
+            if ( current_force == 0.0 )
+                current_force = -999.9
 
             # calculate geometric parameters
             bond1 = distance(i, j, 19, 34)
@@ -86,9 +91,9 @@ END {
             # print out requested stuff
             current_iteration = j
             if ( energy[i,j] != 0.0 && abs(relative_energy) < 1000.0 ) 
-                printf "%-100s  %3d  %12.1f    %9.1f      %5.3f  %5.3f\n", current_filename, current_iteration, relative_energy, current_force, bond1, bond2
+                printf "%100s    %3d  %12.1f    %9.1f      %5.3f  %5.3f\n", current_filename, current_iteration, relative_energy, current_force, bond1, bond2
             else
-                printf "%-100s  %3d  error\n", current_filename, current_iteration
+                printf "%100s    %3d  error\n", current_filename, current_iteration
         }
     }
 }
