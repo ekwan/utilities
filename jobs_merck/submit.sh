@@ -31,12 +31,12 @@ if (( $# != 3 )); then
     echo
     echo "cluster: 16 cores/256 GB"
     echo
-    echo "fast     10 min"
-    echo "small     2 h"
-    echo "medium   12 h"
-    echo "large    48 h"
-    echo "huge    inf  "
-    echo "long      ?  "
+    echo "fast     10 min  no limit"
+    echo "small     2 h    15GB"
+    echo "medium   12 h    20GB"
+    echo "large    48 h    no limit "
+    echo "huge    inf      no limit"
+    echo "long    inf      15 GB  "
     echo
     exit 1
 fi
@@ -77,7 +77,7 @@ for i in *.gjf; do
             fi
         else
             echo Skipped.
-            return
+            continue 2
         fi
     done
     
