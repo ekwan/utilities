@@ -123,7 +123,7 @@ public class GaussianOutputFile extends OutputFileFormat
                                                 int atomNumber1 = Integer.parseInt(fields2[0].replaceAll("[^\\d.]", ""));
                                                 int atomNumber2 = Integer.parseInt(fields2[1].replaceAll("[^\\d.]", ""));
                                                 //System.out.print(fields);
-                                                System.out.printf("   %d, %d\n", atomNumber1, atomNumber2);
+                                                //System.out.printf("   %d, %d\n", atomNumber1, atomNumber2);
                                                 Atom fromAtom = contents.get(atomNumber1-1);
                                                 Atom toAtom = contents.get(atomNumber2-1);
                                                 double bondOrder = 1.0;                                                
