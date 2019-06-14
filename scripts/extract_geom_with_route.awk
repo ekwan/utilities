@@ -31,7 +31,7 @@ $1 == "Charge" && $4 == "Multiplicity" {
 /#p/ && route_read[fileCount] == 0 {
     route_read[fileCount] = 1
     while ( match($0,"-----") == 0 ) {
-        route_card[fileCount] = route_card[fileCount] $0
+        route_card[fileCount] = route_card[fileCount] substr($0,1,length($0)-1)
         getline
     }
 }
