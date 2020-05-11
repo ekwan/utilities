@@ -48,14 +48,11 @@ $1 == "Mode:" && $2 == "1" {
 
 /Frequency:/ {
     for (i=2; i <= NF; i++) {
-        if ($i < 0 ) {
-                n_imaginaries[n_files]++
-                if (imaginaries[n_files]=="none")
-                    imaginaries[n_files]=""
-                if (length(imaginaries[n_files]) > 0)
-                    imaginaries[n_files] = imaginaries[n_files] ","
-                imaginaries[n_files]=imaginaries[n_files] sprintf("%.0f",$i)
-            }
+        if (imaginaries[n_files]=="none")
+            imaginaries[n_files]=""
+        if (length(imaginaries[n_files]) > 0)
+            imaginaries[n_files] = imaginaries[n_files] ", "
+        imaginaries[n_files]=imaginaries[n_files] sprintf("%.0f",$i)
     }
 }
 
