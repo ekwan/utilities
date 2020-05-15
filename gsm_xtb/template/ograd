@@ -1,0 +1,69 @@
+#!/bin/bash
+# The path to ORCA should be added to .bashrc or exported in command line
+
+if [ -z $2 ]
+then
+  echo " need two arguments! "
+  exit
+fi
+
+#arg1: 0001.01
+#arg2: 4
+# structure0001.01
+basename=${1}
+n_cpus=${2}
+input_filename="structure"${1}
+xtb_filename="structure"${1}.xtbout
+job_directory="xtb_structure"${1}
+
+#ofile=orcain$1.in
+#ofileout=orcain$1.out
+#molfile=structure$1
+#ncpu=$2
+#basename="${ofile%.*}"
+
+########## XTB/TM settings: #################
+#echo
+#echo -----start------
+#echo arg1: $1
+#echo arg2: $2
+#echo basename: $basename
+#echo -ne "pwd: "
+#pwd
+#ls -l
+cd scratch
+#pwd
+#ls -l
+if [ -d ${job_directory} ]; then
+    echo !!! ERROR
+    exit 1
+fi
+mkdir ${job_directory}
+cp ${input_filename} ${job_directory}
+cp xtb_to_orca.py ${job_directory}
+cd ${job_directory}
+wc -l < ${input_filename} > ${input_filename}.xyz
+echo "xtb xyz title" >> ${input_filename}.xyz
+cat ${input_filename} >> ${input_filename}.xyz
+#pwd
+#ls -l
+#echo running xtb
+#echo xtb ${input_filename}.xyz --grad --chrg 0   :   ${xtb_filename}
+xtb ${input_filename}.xyz --parallel ${n_cpus} --grad --chrg 0 &> ${xtb_filename}
+#echo done with xtb
+#echo
+#tail ${xtb_filename}
+#echo
+#ls
+#echo ----
+python xtb_to_orca.py ${input_filename}
+#echo ----
+#ls
+#echo --done--
+
+cp "orcain"${basename}.out ..
+cp "orcain"${basename}.engrad ..
+cd ..
+
+#sleep 1
+rm -rf ${job_directory}

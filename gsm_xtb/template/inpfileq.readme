@@ -1,0 +1,13 @@
+SM_TYPE: Toggles between GSM and SSM. Use the indicated 3 letter combinations to utilize each of the chosen features.
+MAX_OPT_ITERS: Maximum iterations for each step of the GSM.
+STEP_OPT_ITERS: Maximum optimizing iterations for each step of the SSM. If starting structure is not properly optimized jobs can fail if the max opt set by this variable is exceeded!
+CONV_TOL: Controls the optimization threshold for nodes. Smaller threshold increases the run time, but can improve TS finding in difficult systems.
+ADD_NODE_TOL: Tolerance variable for the addition of next node in GSM. Higher numbers will afford fast growth, but decrease accuracy of reaction path identification.
+SCALING: For opt steps. This feature controls how the step size is adjusted based on the topography of the previous optimization step. Since the step size is the product of dqmax and the scaling variable, increasing this variable will increase the step size. For more rapid adjustment based on the topography of the reaction path, increase this variable. For less automatic adjustment of the step size, decrease this variable. For the most part, the default setting is fine.
+SSM_DQMAX: Controls the spacing between the nodes in SSM. In cases where the RP struggles to converge or the optimization of RP fails, decreasing this value might help.
+GROWTH_DIRECTION: GSM specific toggle which enables user control of growth direction. Typically the default (0) is preferred. However, this is a good toggle for debugging more difficult cases. For new users think of the location of the TS; if the TS favors the product then growth from the product with low tolerance convergence could provide better TS identification.
+INT_THRESH: Detection threshold for intermediate during string growth. GSM will not consider structures that have a energy below this threshold as a TS along the RP.
+INITIAL_OPT: Starting structure optimization performed on the first structure of the input file.
+FINAL_OPT: Max number of optimization steps performed on the last node of an SSM run.
+TS_FINAL_TYPE: Determines whether rotations are considered causation for termination of the GSM or SSM run. Typically we are searching for a change in bond connectivity so this value is set to 1 for delta bond.
+NNODES: Max number of nodes used for GSM. Set this number high (30) for SE-GSM as the convergence criterion typically results in less nodes needed and too small a number for this setting will result in job failure. For DE-GSM the typical is an odd number ranging from 9-15 with higher values being used for identifying multiple TSs along the path.
