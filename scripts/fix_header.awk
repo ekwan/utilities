@@ -13,7 +13,7 @@ fileCount == 2 {
     if ( spaces == 2 )
         {
             getline
-            getline
+            printf "\n"
             spaces += 2
         }
     if ( spaces == 4)
